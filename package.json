@@ -9,7 +9,9 @@
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "mongodb": "^3.1.6",
+    "mongoose": "^5.2.16"
   },
   "devDependencies": {
     "concurrently": "^3.5.0"
