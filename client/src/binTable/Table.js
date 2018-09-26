@@ -12,10 +12,10 @@ export default (props) => {
     <table>
       <thead>
         <tr>
-        <th>Bin</th>
-        <th>Last Audit</th>
-        <th>History</th>
-      </tr>
+          <th>Bin</th>
+          <th>Last Audit</th>
+          <th>History</th>
+        </tr>
       </thead>
       <tbody>
         {this.tableRows}

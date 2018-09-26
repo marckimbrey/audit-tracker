@@ -19,23 +19,32 @@ const testData = [
 router.get('/', (req, res) => {
   Bin.find({}).exec((err, bins) => {
     if (err) res.end('error retrieving bins')
-    res.json(testData)
+    res.json(bins)
   });
 });
 
-// get single bin
-router.get('/:id', (req, res) => {
-  Bin.findOne({bin: req.params.id}).exec((err, bin) => {
+// update bin
+router.put('/update', (req, res) => {
+  const newDate = new Date()
+  Bin.findOneAndUpdate({bin: req.body.bin},
+     {lastAudit:newDate.toString(),
+       "$push": { "auditHistory": newDate.toString()}
+     }).exec((err, bin) => {
     if (err) res.end('error retrieving bin')
-    res.json(bin)
+    res.json(bin);
   });
 });
 
 // add new bin
 router.post('/add', (req, res) => {
-
-  const newBin = new Poll(req.body);
-  console.log(req.body,newBin)
+  console.log(req.body)
+  const newDate = new Date();
+  const newBin = new Bin({
+    bin: req.body.bin,
+    lastAudit: newDate.toString(),
+    auditHistory: [newDate.toString()]
+  });
+  console.log(newBin)
   newBin.save((err, bin) => {
     if (err) console.log('error saving to database', err);
     console.log(bin)

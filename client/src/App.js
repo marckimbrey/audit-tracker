@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import Table from './binTable/Table'
+import Table from './binTable/Table';
+import AuditBin from './AuditBin';
+import AddBin from './AddBin';
 
 class App extends Component {
     state = {
@@ -9,7 +11,10 @@ class App extends Component {
 
   componentDidMount() {
     this.callApi()
-      .then(res => this.setState({ response: res }))
+      .then(res => this.setState(
+        { response: res,
+          binNumbers:res.map(bin =>  bin.bin)
+        }))
       .catch(err => console.log(err));
   }
 
@@ -24,9 +29,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-        </header>
+        <AuditBin binNumbers={
+          this.state.binNumbers} />
         <Table bins={this.state.response} />
+        <AddBin />
       </div>
     );
   }
