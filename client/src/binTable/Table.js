@@ -14,7 +14,7 @@ export default (props) => {
         <tr>
           <th>Bin</th>
           <th>Last Audit</th>
-          <th>History</th>
+          <th>Days Old</th>
         </tr>
       </thead>
       <tbody>
