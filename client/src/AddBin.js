@@ -24,7 +24,9 @@ export default class AddBin extends Component {
       },
       method: "Post",
       body: JSON.stringify({bin: this.state.value})
-    }).catch(err => console.log(err));
+    }).then(res => res.json())
+    .then(newBin => this.props.addNewBin(newBin) )
+    .catch(err => console.log(err));
     event.preventDefault();
   }
 

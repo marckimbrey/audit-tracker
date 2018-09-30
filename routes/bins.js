@@ -29,8 +29,9 @@ router.put('/update', (req, res) => {
   Bin.findOneAndUpdate({bin: req.body.bin},
      {lastAudit:newDate.toString(),
        "$push": { "auditHistory": newDate.toString()}
-     }).exec((err, bin) => {
+     }, {new: true}).exec((err, bin) => {
     if (err) res.end('error retrieving bin')
+    console.log('newBin', bin)
     res.json(bin);
   });
 });

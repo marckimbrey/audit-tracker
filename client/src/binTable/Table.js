@@ -3,8 +3,10 @@ import TableRow from './TableRow'
 
 export default (props) => {
   if(props.bins) {
-
-    this.tableRows = props.bins.map((bin,i) => {
+    const orderedBins = props.bins.sort((a,b) => {
+      return new Date(a.lastAudit) - new Date(b.lastAudit)
+    })
+    this.tableRows = orderedBins.map((bin,i) => {
       return <TableRow bin={bin} key={i}/>
     })
   }

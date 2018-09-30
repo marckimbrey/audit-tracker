@@ -16,6 +16,8 @@ class App extends Component {
           binNumbers:res.map(bin =>  bin.bin)
         }))
       .catch(err => console.log(err));
+    this.updateBin = this.updateBin.bind(this)
+    this.addNewBin = this.addNewBin.bind(this)
   }
 
   callApi = async () => {
@@ -26,13 +28,27 @@ class App extends Component {
 
     return body;
   };
+
+  updateBin = (updatedBin) => {
+    const newBinState = this.state.response.map((bin, x) => {
+      return (bin.bin == updatedBin.bin)? updatedBin: bin;
+    });
+
+    this.setState({response: newBinState})
+  }
+
+  addNewBin = (newBin) => {
+    console.log('newBin',newBin)
+    this.setState({response:[...this.state.response, newBin]})
+  }
+
   render() {
     return (
       <div className="App">
         <AuditBin binNumbers={
-          this.state.binNumbers} />
+          this.state.binNumbers} updateBin={this.updateBin}/>
         <Table bins={this.state.response} />
-        <AddBin />
+        <AddBin addNewBin={this.addNewBin} />
       </div>
     );
   }

@@ -24,8 +24,11 @@ export default class AuditBin extends Component {
       },
       method: "PUT",
       body: JSON.stringify({bin: this.state.value})
-    }).catch(err => console.log(err));
+    }).then(res => res.json())
+    .then(newBin => this.props.updateBin(newBin))
+    .catch(err => console.log(err));
     event.preventDefault();
+
   }
 
   render() {
