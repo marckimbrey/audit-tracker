@@ -3,10 +3,12 @@ import './App.css';
 import Table from './binTable/Table';
 import AuditBin from './AuditBin';
 import AddBin from './AddBin';
+import Login from './Login';
 
 class App extends Component {
     state = {
-    response:  ''
+    response:  '',
+    authorisedUser: false
   };
 
   componentDidMount() {
@@ -18,6 +20,7 @@ class App extends Component {
       .catch(err => console.log(err));
     this.updateBin = this.updateBin.bind(this)
     this.addNewBin = this.addNewBin.bind(this)
+    this.loginUser = this.loginUser.bind(this);
   }
 
   callApi = async () => {
@@ -42,15 +45,26 @@ class App extends Component {
     this.setState({response:[...this.state.response, newBin]})
   }
 
+  loginUser = (user) => {
+    console.log('user', user)
+    this.setState({authorisedUser: true})
+  }
+
   render() {
-    return (
-      <div className="App">
-        <AuditBin binNumbers={
-          this.state.binNumbers} updateBin={this.updateBin}/>
-        <Table bins={this.state.response} />
-        <AddBin addNewBin={this.addNewBin} />
-      </div>
-    );
+    if(this.state.authorisedUser) {
+      return (
+        <div className="App">
+          <AuditBin binNumbers={
+            this.state.binNumbers} updateBin={this.updateBin}/>
+          <Table bins={this.state.response} />
+          <AddBin addNewBin={this.addNewBin} />
+        </div>
+      )
+    } else {
+      return(
+      <Login loginUser={this.loginUser} />
+      );
+    }
   }
 }
 
