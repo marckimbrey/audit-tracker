@@ -8,14 +8,15 @@ import Login from './Login';
 class App extends Component {
     state = {
     response:  '',
-    authorisedUser: false
+    user: false
   };
 
   componentDidMount() {
     this.callApi()
       .then(res => this.setState(
         { response: res,
-          binNumbers:res.map(bin =>  bin.bin)
+          binNumbers:res.map(bin =>  bin.bin),
+          user: localStorage.getItem('user')
         }))
       .catch(err => console.log(err));
     this.updateBin = this.updateBin.bind(this)
@@ -47,11 +48,11 @@ class App extends Component {
 
   loginUser = (user) => {
     console.log('user', user)
-    this.setState({authorisedUser: true})
+    this.setState({user: true})
   }
 
   render() {
-    if(this.state.authorisedUser) {
+    if(this.state.user) {
       return (
         <div className="App">
           <AuditBin binNumbers={

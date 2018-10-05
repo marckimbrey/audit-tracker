@@ -40,12 +40,12 @@ export default class Login extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-          username:
+          Username:
           <input type="text" name="username" value={this.state.username} onChange={this.handleChange} />
         </label>
         <label>
-          username:
-          <input type="text" name="password" value={this.state.password} onChange={this.handleChange} />
+          Password:
+          <input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Submit" />
       </form>
