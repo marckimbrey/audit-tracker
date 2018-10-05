@@ -6,7 +6,6 @@ const Bin = require('../models/bins');
 
 // get all bins
 router.get('/', (req, res) => {
-  console.log('session', req.session)
   Bin.find({}).exec((err, bins) => {
     if (err) res.end('error retrieving bins')
     res.json(bins)
@@ -14,7 +13,7 @@ router.get('/', (req, res) => {
 });
 
 // update bin
-router.put('/update', (req, res) => {
+router.put('/update',  (req, res) => {
   const newDate = new Date()
   Bin.findOneAndUpdate({bin: req.body.bin},
      {lastAudit:newDate.toString(),

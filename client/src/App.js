@@ -48,7 +48,8 @@ class App extends Component {
 
   loginUser = (user) => {
     console.log('user', user)
-    this.setState({user: true})
+    localStorage.setItem('user', user)
+    this.setState({user: user})
   }
 
   render() {
@@ -63,7 +64,9 @@ class App extends Component {
       )
     } else {
       return(
-      <Login loginUser={this.loginUser} />
+        <div className="App">
+          <Login loginUser={this.loginUser} />
+        </div>
       );
     }
   }

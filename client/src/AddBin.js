@@ -42,7 +42,7 @@ export default class AddBin extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-          Add Bin:
+          Add Bin: 
           <input type="text" value={this.state.value} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Submit" />

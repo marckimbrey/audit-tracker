@@ -3,9 +3,58 @@
   font-size: 1.25em;
   width: 100%;
   max-width: 600px;
-  margin: 0 auto;
+  margin: 5% auto;
 }
 
 table {
   width: 100%;
+  margin: 5% 0;
+}
+
+tr {
+  padding: 1em 0;
+}
+
+form {
+  width: 100%;
+}
+
+label {
+  padding-right: .5em;
+}
+
+select {
+  width: 50%;
+  padding: 0.25em;
+}
+
+
+.days-0,.days-1,
+.days-2,.days-3,.days-4{
+  background: #1AF462;
+}
+
+.days-5,.days-6,
+.days-7, .days-8 ,.days-9 {
+  background: #43D455;
+}
+
+.days-10, .days-11,
+.days-12, .days-13, .days-14 {
+  background: #6CB449;
+}
+
+.days-15, .days-16,
+.days-17, .days-18, .days-19 {
+  background: #96953D;
+}
+
+.days-20, .days-21, .days-22,
+.days-23, .days-24  {
+  background: #BF7531;
+}
+
+.days-25, .days-26, .days-27,
+.days-28, .days-29, .days-30  {
+  background: #E95625;
 }

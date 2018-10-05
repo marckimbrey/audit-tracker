@@ -7,7 +7,7 @@ export default (props) => {
 
 
   return (
-    <tr>
+    <tr className={`days-${daysOld}`}>
       <td>{props.bin.bin}</td>
       <td>{formatedDate}</td>
       <td>{daysOld}</td>
