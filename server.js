@@ -9,6 +9,8 @@ const dburl = process.env.MONGODB_URI || "mongodb://marc:lwg4614@ds163162.mlab.c
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var JwtStrategy = require('passport-jwt').Strategy
+var ExtractJwt = require('passport-jwt').ExtractJwt;
 
 const bins = require('./routes/bins');
 const users = require('./routes/users');
@@ -30,6 +32,28 @@ app.use('/api/users', users);
 
 // passport config
 var User = require('./models/users');
+
+passport.use(new JwtStrategy(
+  {secretOrKey: 'Costa Rica',
+   jwtFromRequest: ExtractJwt.fromBodyField('token') },
+   (jwt_payload, done) => {
+     console.log('jwt_payload',jwt_payload)
+    //  const verifiedUser = JSON.parse(jwt_payload);
+    //  console.log(verifiedUser)
+     User.findOne({username: jwt_payload.user.username}, function(err, user) {
+    if (err) {
+        console.log('verify user error', err)
+        return done(err, false);
+    }
+    if (user) {
+      console.log('verify user found', user)
+        return done(null, user);
+    } else {
+        console.log('verify user no user found')
+        return done(null, false);
+    }
+});
+}));
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());

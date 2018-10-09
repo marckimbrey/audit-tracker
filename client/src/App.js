@@ -12,11 +12,13 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.callApi()
-      .then(res => this.setState(
+    if(window.localStorage.getItem('user')) {
+      const user = JSON.parse(window.localStorage.getItem('user'));
+      this.verifyUserToken(user.token)
+    }
+    this.callApi().then(res => this.setState(
         { response: res,
-          binNumbers:res.map(bin =>  bin.bin),
-          user: localStorage.getItem('user')
+          binNumbers:res.map(bin =>  bin.bin)
         }))
       .catch(err => console.log(err));
     this.updateBin = this.updateBin.bind(this)
@@ -42,14 +44,24 @@ class App extends Component {
   }
 
   addNewBin = (newBin) => {
-    console.log('newBin',newBin)
     this.setState({response:[...this.state.response, newBin]})
   }
 
   loginUser = (user) => {
-    console.log('user', user)
-    localStorage.setItem('user', user)
+    localStorage.setItem('user', JSON.stringify(user.user))
     this.setState({user: user})
+  }
+
+  verifyUserToken = (token) => {
+    fetch('/api/users/verifyToken',
+      {method: 'POST', headers: {"Content-Type": "application/json" },
+      body:JSON.stringify({token:token})})
+      .then(res => res.json())
+      .then(user => {
+          if (user.user.token) {
+            this.setState({user: user.user})
+          }
+        })
   }
 
   render() {
