@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect
+} from 'react-router-dom'
 import './App.css';
 import Table from './binTable/Table';
 import AuditBin from './AuditBin';
 import AddBin from './AddBin';
 import Login from './Login';
+import BinDetail from './BinDetail'
 
 class App extends Component {
     state = {
@@ -65,23 +72,49 @@ class App extends Component {
   }
 
   render() {
-    if(this.state.user) {
-      return (
-        <div className="App">
-          <AuditBin binNumbers={
-            this.state.binNumbers} updateBin={this.updateBin}/>
-          <Table bins={this.state.response} />
-          <AddBin addNewBin={this.addNewBin} />
-        </div>
-      )
-    } else {
-      return(
-        <div className="App">
-          <Login loginUser={this.loginUser} />
-        </div>
-      );
-    }
-  }
+  //   if(this.state.user) {
+  //     return (
+  //       <div className="App">
+  //         <AuditBin binNumbers={
+  //           this.state.binNumbers} updateBin={this.updateBin}/>
+  //         <Table bins={this.state.response} />
+  //         <AddBin addNewBin={this.addNewBin} />
+  //       </div>
+  //     )
+  //   } else {
+  //     return(
+  //       <div className="App">
+  //         <Login loginUser={this.loginUser} />
+  //       </div>
+  //     );
+  //   }
+  // }
+  return (
+    <Router>
+      <div className="App">
+        <Route path="/" exact
+          {...this.props}
+          render={props => {
+            if(this.state.user) {
+              return (<div className="App">
+                <AuditBin binNumbers={
+                  this.state.binNumbers} updateBin={this.updateBin}/>
+                <Table bins={this.state.response} />
+                <AddBin addNewBin={this.addNewBin} />
+              </div>)
+            } else {
+                return (<div className="App">
+                  <Login loginUser={this.loginUser} />
+                </div>)
+            }}}
+        />
+        <Route path='/bin/:id' render={(props) => {
+          return(<BinDetail {...props} bin={this.state.response.filter(x => x._id === props.match.params.id)} />)
+        }}
+        />
+      </div>
+    </Router>
+  )}
 }
 
 export default App;

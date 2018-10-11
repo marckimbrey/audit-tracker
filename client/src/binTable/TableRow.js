@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 export default (props) => {
   const formatedDate = formatDate(props.bin.lastAudit)
@@ -8,7 +9,7 @@ export default (props) => {
 
   return (
     <tr className={`days-${daysOld}`}>
-      <td>{props.bin.bin}</td>
+      <td><Link to={`bin/${props.bin._id}`} bin={props.bin}>{props.bin.bin}</Link></td>
       <td>{formatedDate}</td>
       <td>{daysOld}</td>
     </tr>
