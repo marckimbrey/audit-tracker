@@ -56,7 +56,8 @@ class App extends Component {
   }
 
   loginUser = (user) => {
-    localStorage.setItem('user', JSON.stringify(user.user))
+    console.log('user',user)
+    localStorage.setItem('user', JSON.stringify(user))
     this.setState({user: user})
   }
 

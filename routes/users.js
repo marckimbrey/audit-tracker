@@ -12,6 +12,7 @@ const User = require('../models/users');
 
 router.post('/login', passport.authenticate('local'), function(req, res) {
   // create jwt
+  console.log(req.body)
   var token = jwt.sign({user: req.body }, 'Costa Rica')
 
   res.json({username: req.body.username, token: token, authenticated: true});
@@ -42,6 +43,9 @@ router.post('/register', function(req, res) {
 
         passport.authenticate('local')(req, res, function () {
             console.log('registered and logged in ')
+            var token = jwt.sign({user: user }, 'Costa Rica')
+
+            res.json({username: user.username, token: token, authenticated: true});
         });
     });
 });

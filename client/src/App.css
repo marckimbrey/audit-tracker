@@ -29,6 +29,15 @@ select {
   padding: 0.25em;
 }
 
+button, input[type="submit"] {
+  padding: .5em;
+}
+
+.login-input {
+  width: 80%;
+  margin: 1em auto;
+  max-width: 400px;
+}
 
 .days-0,.days-1,
 .days-2,.days-3,.days-4{
