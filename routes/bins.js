@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
   });
 });
 
-// update bin
+// update bin with new audit
 router.put('/update',  (req, res) => {
   const newDate = new Date()
   Bin.findOneAndUpdate({bin: req.body.bin},
@@ -20,6 +20,19 @@ router.put('/update',  (req, res) => {
        "$push": { "auditHistory": newDate.toString()}
      }, {new: true}).exec((err, bin) => {
     if (err) res.end('error retrieving bin')
+    console.log('newBin', bin)
+    res.json(bin);
+  });
+});
+
+//delete audit
+router.put('/deleteAudit',  (req, res) => {
+
+  Bin.findOneAndUpdate({bin: req.body.updatedBin.bin},
+     req.body.updatedBin).exec((err, bin) => {
+       console.log(req.body.updatedBin.bin, bin.bin)
+    if (err) res.end('error updating bin')
+      console.log('deleteAudit',req.body.updatedBin)
     console.log('newBin', bin)
     res.json(bin);
   });

@@ -31,6 +31,7 @@ class App extends Component {
     this.updateBin = this.updateBin.bind(this)
     this.addNewBin = this.addNewBin.bind(this)
     this.loginUser = this.loginUser.bind(this);
+    this.deleteAudit = this.deleteAudit.bind(this)
   }
 
   callApi = async () => {
@@ -59,6 +60,48 @@ class App extends Component {
     this.setState({user: user})
   }
 
+  deleteAudit = (bin, dt) => {
+    let updatedBin;
+    let newBinState;
+    const newAuditHistory = bin.auditHistory.filter((auditDate) => {
+      return auditDate !== dt;
+    })
+    const lastAuditExist = newAuditHistory.filter(auditDate => {
+      return (Date.parse(auditDate) === Date.parse(bin.lastAudit))
+    })[0]
+
+    if (!lastAuditExist) {
+      newBinState = this.state.response.map(x => {
+        if (x._id === bin._id) {
+          x.auditHistory = newAuditHistory;
+          x.lastAudit = newAuditHistory[newAuditHistory.length-1]
+          updatedBin = x
+          return x;
+        }
+        return x;
+      })
+    } else {
+      newBinState = this.state.response.map(x => {
+        if (x._id === bin._id) {
+          x.auditHistory = newAuditHistory;
+          updatedBin = x;
+          return x;
+        }
+        return x;
+      })
+    }
+    console.log('bin to update', updatedBin)
+    fetch('/api/bins/deleteAudit',
+      {method: 'PUT', headers: {"Content-Type": "application/json" },
+      body:JSON.stringify({updatedBin})})
+      .then(res => res.json())
+      .then(updatedBin => {
+        console.log(updatedBin)
+        })
+    this.setState({response: newBinState})
+
+  }
+
   verifyUserToken = (token) => {
     fetch('/api/users/verifyToken',
       {method: 'POST', headers: {"Content-Type": "application/json" },
@@ -72,23 +115,7 @@ class App extends Component {
   }
 
   render() {
-  //   if(this.state.user) {
-  //     return (
-  //       <div className="App">
-  //         <AuditBin binNumbers={
-  //           this.state.binNumbers} updateBin={this.updateBin}/>
-  //         <Table bins={this.state.response} />
-  //         <AddBin addNewBin={this.addNewBin} />
-  //       </div>
-  //     )
-  //   } else {
-  //     return(
-  //       <div className="App">
-  //         <Login loginUser={this.loginUser} />
-  //       </div>
-  //     );
-  //   }
-  // }
+
   return (
     <Router>
       <div className="App">
@@ -109,7 +136,13 @@ class App extends Component {
             }}}
         />
         <Route path='/bin/:id' render={(props) => {
-          return(<BinDetail {...props} bin={this.state.response.filter(x => x._id === props.match.params.id)} />)
+          return(
+            <BinDetail
+              {...props}
+              bin={this.state.response}
+              deleteAudit={this.deleteAudit}
+             />
+          )
         }}
         />
       </div>

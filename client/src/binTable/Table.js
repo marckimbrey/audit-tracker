@@ -1,5 +1,6 @@
 import React from 'react';
 import TableRow from './TableRow'
+import {formatDate} from './TableRow'
 
 export default (props) => {
   if(props.bins) {
@@ -10,18 +11,46 @@ export default (props) => {
       return <TableRow bin={bin} key={i}/>
     })
   }
-  return (
-    <table>
-      <thead>
-        <tr>
-          <th>Bin</th>
-          <th>Last Audit</th>
-          <th>Days Old</th>
+  if(props.binHistory) {
+    this.historyRows = props.binHistory.auditHistory.map((auditDate, i) => {
+      return (
+        <tr key={i}>
+          <td><button  onClick={()=>props.deleteAudit(props.binHistory, auditDate)}>X</button></td>
+          <td>{formatDate(auditDate)}</td>
         </tr>
-      </thead>
-      <tbody>
-        {this.tableRows}
-      </tbody>
-    </table>
-  )
+      )
+    })
+  }
+  switch(props.type) {
+    case 'history':
+      return (
+        <table>
+          <thead>
+            <tr>
+              <th>Delete</th>
+              <th>Audit Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.historyRows}
+          </tbody>
+        </table>
+      )
+
+    default:
+      return (
+        <table>
+          <thead>
+            <tr>
+              <th>Bin</th>
+              <th>Last Audit</th>
+              <th>Days Old</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.tableRows}
+          </tbody>
+        </table>
+      )
+  }
 }
