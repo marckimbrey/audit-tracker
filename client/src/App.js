@@ -4,7 +4,8 @@ import {
   Route,
   Link,
   Redirect
-} from 'react-router-dom'
+} from 'react-router-dom';
+import { withAlert } from 'react-alert';
 import './App.css';
 import Table from './binTable/Table';
 import AuditBin from './AuditBin';
@@ -32,6 +33,7 @@ class App extends Component {
     this.addNewBin = this.addNewBin.bind(this)
     this.loginUser = this.loginUser.bind(this);
     this.deleteAudit = this.deleteAudit.bind(this)
+    this.showAlert = this.showAlert.bind(this)
   }
 
   callApi = async () => {
@@ -43,20 +45,25 @@ class App extends Component {
     return body;
   };
 
+  showAlert(msg, type) {
+    console.log(this.props.alert)
+            this.props.alert.show(msg, { type: type })
+  }
+
   updateBin = (updatedBin) => {
     const newBinState = this.state.response.map((bin, x) => {
       return (bin.bin == updatedBin.bin)? updatedBin: bin;
     });
-
+    this.showAlert(`bin ${updatedBin.bin} has been audited`, 'success')
     this.setState({response: newBinState})
   }
 
   addNewBin = (newBin) => {
+    this.showAlert(`bin ${newBin.bin} has been added`, 'success')
     this.setState({response:[...this.state.response, newBin]})
   }
 
   loginUser = (user) => {
-    console.log('user',user)
     localStorage.setItem('user', JSON.stringify(user))
     this.setState({user: user})
   }
@@ -126,13 +133,16 @@ class App extends Component {
             if(this.state.user) {
               return (<div className="App">
                 <AuditBin binNumbers={
-                  this.state.binNumbers} updateBin={this.updateBin}/>
+                  this.state.binNumbers}
+                  updateBin={this.updateBin}
+                  showAlert={this.showAlert}
+                />
                 <Table bins={this.state.response} />
-                <AddBin addNewBin={this.addNewBin} />
+                <AddBin addNewBin={this.addNewBin} showAlert={this.showAlert} />
               </div>)
             } else {
                 return (<div className="App">
-                  <Login loginUser={this.loginUser} />
+                  <Login loginUser={this.loginUser} showAlert={this.showAlert} />
                 </div>)
             }}}
         />
@@ -151,4 +161,4 @@ class App extends Component {
   )}
 }
 
-export default App;
+export default withAlert(App);

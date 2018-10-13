@@ -24,7 +24,13 @@ export default class AuditBin extends Component {
       },
       method: "PUT",
       body: JSON.stringify({bin: this.state.value})
-    }).then(res => res.json())
+    }).then(res => {
+      if(res.status !== 200) {
+        this.props.showAlert("Error bin not updated", 'error')
+      }else if (res.status === 200) {
+        return res.json()
+      }
+    })
     .then(newBin => this.props.updateBin(newBin))
     .catch(err => console.log(err));
     event.preventDefault();

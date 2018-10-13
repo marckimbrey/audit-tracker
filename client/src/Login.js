@@ -28,8 +28,19 @@ export default class Login extends Component {
       },
       method: "Post",
       body: JSON.stringify(this.state)
-    }).then(res => res.json())
-    .then(user => this.props.loginUser(user))
+    }).then(res => {
+      if(res.status === 401) {
+        this.props.showAlert("username and password did not match", 'error')
+      }else if (res.status === 200) {
+        return res.json()
+      }
+
+    })
+    .then(user => {
+      if (user) {
+        this.props.loginUser(user)
+      }
+    })
     .catch(err => console.log(err));
 
     event.preventDefault();

@@ -5,8 +5,11 @@
   "proxy": "http://localhost:5000/",
   "dependencies": {
     "react": "^16.5.2",
+    "react-alert": "^4.0.4",
+    "react-alert-template-basic": "^1.0.0",
     "react-dom": "^16.5.2",
-    "react-scripts": "1.1.5"
+    "react-scripts": "1.1.5",
+    "react-transition-group": "^2.5.0"
   },
   "scripts": {
     "start": "react-scripts start",

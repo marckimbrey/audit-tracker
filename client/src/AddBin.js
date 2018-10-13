@@ -24,7 +24,13 @@ export default class AddBin extends Component {
       },
       method: "Post",
       body: JSON.stringify({bin: this.state.value})
-    }).then(res => res.json())
+    }).then(res => {
+      if(res.status !== 200) {
+        this.props.showAlert("Error bin not added", 'error')
+      }else if (res.status === 200) {
+        return res.json()
+      }
+    })
     .then(newBin => this.props.addNewBin(newBin) )
     .catch(err => console.log(err));
     event.preventDefault();
@@ -42,7 +48,7 @@ export default class AddBin extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-          Add Bin: 
+          Add Bin:
           <input type="text" value={this.state.value} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Submit" />
