@@ -98,13 +98,19 @@ class App extends Component {
         return x;
       })
     }
-    console.log('bin to update', updatedBin)
     fetch('/api/bins/deleteAudit',
       {method: 'PUT', headers: {"Content-Type": "application/json" },
       body:JSON.stringify({updatedBin})})
-      .then(res => res.json())
+      .then(res => {
+        if(res.status !== 200) {
+          this.showAlert("Error bin not updated", 'error')
+        }else if (res.status === 200) {
+
+          return res.json()
+        }
+      })
       .then(updatedBin => {
-        console.log(updatedBin)
+          this.showAlert(`Bin ${updatedBin.bin} has been updated`, 'success')
         })
     this.setState({response: newBinState})
 
